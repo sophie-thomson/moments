@@ -159,7 +159,7 @@ function PostCreateForm() {
                 {message}
               </Alert>
             ))}
-            
+
             <div className="d-md-none">{textFields}</div>
           </Container>
         </Col>
