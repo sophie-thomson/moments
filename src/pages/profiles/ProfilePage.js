@@ -31,7 +31,7 @@ function ProfilePage() {
   const currentUser = useCurrentUser();
   const { id } = useParams();
 
-  const setProfileData = useSetProfileData();
+  const { setProfileData, handleFollow } = useSetProfileData();
   const { pageProfile } = useProfileData();
 
   const [profile] = pageProfile.results;
@@ -98,7 +98,7 @@ function ProfilePage() {
             ) : (
               <Button
                 className={`${btnStyles.Button} ${btnStyles.Black}`}
-                onClick={() => {}}
+                onClick={() => handleFollow(profile)}
               >
                 follow
               </Button>
@@ -111,46 +111,46 @@ function ProfilePage() {
 
   const mainProfilePosts = (
     <>
-      <hr />
-      <p className="text-center">{profile?.owner}'s posts</p>
-      <hr />
-      {profilePosts.results.length ? (
-        <InfiniteScroll
-          children={profilePosts.results.map((post) => (
-            <Post key={post.id} {...post} setPosts={setProfilePosts} />
-          ))}
-          dataLength={profilePosts.results.length}
-          loader={<Asset spinner />}
-          hasMore={!!profilePosts.next}
-          next={() => fetchMoreData(profilePosts, setProfilePosts)}
-        />
-      ) : (
-        <Asset
-          src={NoResults}
-          message={`No results found, ${profile?.owner} hasn't posted yet.`}
-        />
-      )}
+        <hr />
+        <p className="text-center">{profile?.owner}'s posts</p>
+        <hr />
+        {profilePosts.results.length ? (
+            <InfiniteScroll
+            children={profilePosts.results.map((post) => (
+                <Post key={post.id} {...post} setPosts={setProfilePosts} />
+            ))}
+            dataLength={profilePosts.results.length}
+            loader={<Asset spinner />}
+            hasMore={!!profilePosts.next}
+            next={() => fetchMoreData(profilePosts, setProfilePosts)}
+            />
+        ) : (
+            <Asset
+            src={NoResults}
+            message={`No results found, ${profile?.owner} hasn't posted yet.`}
+            />
+        )}
     </>
   );
 
   return (
     <Row>
-      <Col className="py-2 p-0 p-lg-2" lg={8}>
-        <PopularProfiles mobile />
-        <Container className={appStyles.Content}>
-          {hasLoaded ? (
-            <>
-              {mainProfile}
-              {mainProfilePosts}
-            </>
-          ) : (
-            <Asset spinner />
-          )}
-        </Container>
-      </Col>
-      <Col lg={4} className="d-none d-lg-block p-0 p-lg-2">
-        <PopularProfiles />
-      </Col>
+        <Col className="py-2 p-0 p-lg-2" lg={8}>
+            <PopularProfiles mobile />
+            <Container className={appStyles.Content}>
+            {hasLoaded ? (
+                <>
+                {mainProfile}
+                {mainProfilePosts}
+                </>
+            ) : (
+                <Asset spinner />
+            )}
+            </Container>
+        </Col>
+        <Col lg={4} className="d-none d-lg-block p-0 p-lg-2">
+            <PopularProfiles />
+        </Col>
     </Row>
   );
 }
